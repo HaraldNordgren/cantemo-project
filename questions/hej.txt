@@ -1,0 +1,1 @@
+Do I have to make separate models for image path and meta data, I am currently representing both on a single database row as one model

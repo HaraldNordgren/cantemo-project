@@ -1,0 +1,9 @@
+{% if images %}
+    <ul>
+    {% for im in images %}
+        <li>{{ im }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No images are available.</p>
+{% endif %}

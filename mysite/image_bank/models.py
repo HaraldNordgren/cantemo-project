@@ -7,4 +7,4 @@ class BankImage(models.Model):
     metadata = models.CharField(max_length=200)
 
     def __str__(self):
-        return "%s (%s)" % (path, metadata)
+        return "%s (%s)" % (self.path, self.metadata)

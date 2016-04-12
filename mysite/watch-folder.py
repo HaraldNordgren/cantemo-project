@@ -10,19 +10,22 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from watchdog.events import FileCreatedEvent
 
+from constants import watched_folder
+
 
 class MyEventHandler(FileSystemEventHandler):
 
-    #def dispatch(self, event):
     def on_created(self, event):
         if isinstance(event, FileCreatedEvent):
-            im = BankImage(path=event.src_path)
+            im_path = "/".join(event.src_path.split("/")[1:])
+            im = BankImage(path=im_path)
             im.save()
-            print("Added %s" % event.src_path)
+            print("Added %s" % im_path)
 
+os.chdir(watched_folder)
 event_handler = MyEventHandler()
 observer = Observer()
-observer.schedule(event_handler, "./stored-images", recursive=True)
+observer.schedule(event_handler, ".", recursive=True)
 observer.start()
 
 try:
