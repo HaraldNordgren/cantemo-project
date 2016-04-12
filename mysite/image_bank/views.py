@@ -16,4 +16,4 @@ def path_search(request):
 def name_search(request):
     images = BankImage.objects.filter(path__icontains=request.GET.get('q'))
     context = { 'images': images }
-    return render(request, 'image_bank/index.html', context)
+    return render(request, 'image_bank/name_search.html', context)

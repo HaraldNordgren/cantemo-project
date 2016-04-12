@@ -7,20 +7,29 @@ django.setup()
 from image_bank.models import BankImage
 
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-from watchdog.events import FileCreatedEvent
+from watchdog.events import *
 
 from constants import watched_folder
 
 
 class MyEventHandler(FileSystemEventHandler):
 
+    def remove_dot(self, event):
+        return "/".join(event.src_path.split("/")[1:])
+
     def on_created(self, event):
         if isinstance(event, FileCreatedEvent):
-            im_path = "/".join(event.src_path.split("/")[1:])
+            im_path = self.remove_dot(event)
             im = BankImage(path=im_path)
             im.save()
             print("Added %s" % im_path)
+
+    def on_deleted(self, event):
+        if isinstance(event, FileDeletedEvent):
+            im_path = self.remove_dot(event)
+            BankImage.objects.filter(path=im_path).delete()
+            print("Removed %s" % im_path)
+
 
 os.chdir(watched_folder)
 event_handler = MyEventHandler()
