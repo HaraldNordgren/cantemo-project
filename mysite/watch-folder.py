@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import time, os, django
-
+import django
 os.environ["DJANGO_SETTINGS_MODULE"] = "mysite.settings"
 django.setup()
+
 from image_bank.models import BankImage
 from image_bank.constants import *
 
+import time, os
 from watchdog.observers import Observer
 from watchdog.events import *
 

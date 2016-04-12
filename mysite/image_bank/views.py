@@ -10,14 +10,25 @@ def remove_prefix(string):
     #return string.lstrip("/")
 
 def index(request):
-    images = []
-    for im in BankImage.objects.all():
-        short_path = im.path
-        #full_path = watched_folder + "/" + im.path
-        full_path = stored_images + im.path
-        images.append( (short_path, full_path) )
 
-    context = { 'images': images }
+    if request.GET.get('namesearch'):
+        search = request.GET.get('namesearch')
+        images = BankImage.objects.filter(path__icontains=search)
+        #searched = True
+    else:
+        search = ""
+        images = BankImage.objects.all()
+        #searched = False
+
+    paths = []
+    for im in images:
+        short_path = im.path
+        full_path = stored_images + im.path
+        paths.append( (short_path, full_path) )
+
+    context = {
+            'images': paths,
+            'search': search}
     return render(request, 'image_bank/index.html', context)
 
 def path_search(request):

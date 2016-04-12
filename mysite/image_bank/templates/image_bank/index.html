@@ -1,12 +1,25 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'image_bank/style.css' %}" />
 
+<form method="get">
+    <label>Name search: </label>
+    <input type="text" name="namesearch" value="{{ search }}">
+    <input type="submit" value="OK">
+    <a href="/image_bank">
+        <input type="button" value="Clear">
+    </a>
+</form>
+
 {% if images %}
     <ul>
     {% for im in images %}
-    <li><a href={{ im.1 }}>{{ im.0 }}</a></li>
+        <li><a href={{ im.1 }}>{{ im.0 }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No images are available.</p>
+    {% if search %}
+        <p>No images matched the search.</p>
+    {% else %}
+        <p>The databse currently has no images.</p>
+    {% endif %}
 {% endif %}
