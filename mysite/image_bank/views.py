@@ -29,6 +29,9 @@ def index(request):
     elif request.GET.get('metadata_search'):
         metadata_search = request.GET.get('metadata_search')
         images = BankImage.objects.filter(metadata__icontains=metadata_search)
+    elif request.POST.get('delete'):
+        BankImage.objects.get(path=request.POST.get('short_path')).delete()
+        images = BankImage.objects.all()
     else:
         images = BankImage.objects.all()
 
@@ -49,16 +52,20 @@ def show_image(request):
     short_path = remove_prefix(request.path_info)
     full_path = watched_folder + short_path
 
-    if request.method == 'POST':
+    if request.POST.get('metadata'):
         im = BankImage.objects.get(path=short_path)
-        metadata = request.POST['metadata']
+        metadata = request.POST.get('metadata')
         im.metadata = metadata
         im.save()
+    elif request.POST:
+        print(request.POST)
+        metadata = ""
     else:
         metadata = BankImage.objects.get(path=short_path).metadata
     
     context = {
-            'im_path' : full_path,
-            'metadata': metadata }
+            'short_path': short_path,
+            'full_path' : full_path,
+            'metadata'  : metadata }
 
     return render(request, 'image_bank/show_image.html', context)

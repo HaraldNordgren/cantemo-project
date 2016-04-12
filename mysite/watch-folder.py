@@ -15,7 +15,6 @@ from watchdog.events import *
 class MyEventHandler(FileSystemEventHandler):
 
     def remove_dot(self, event):
-        #return "/".join(event.src_path.split("/")[1:])
         return event.src_path.lstrip("./")
 
     def on_created(self, event):

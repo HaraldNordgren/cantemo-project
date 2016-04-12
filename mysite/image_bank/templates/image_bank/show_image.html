@@ -1,4 +1,7 @@
-<img src="/{{ im_path }}">
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'image_bank/style.css' %}" />
+
+<img src="/{{ full_path }}">
 <br>
 
 <form method="post">
@@ -6,4 +9,11 @@
 <label>Metadata:</label>
 <input type="text" name='metadata' value="{{ metadata }}" />
 <input type="submit" value="Update" />
+</form>
+
+<form action="/image_bank/" method="post" id="idOfForm">
+{% csrf_token %}
+<input type="hidden" name='delete' value='true' />
+<input type="hidden" name='short_path' value='{{ short_path }}' />
+<input type="submit" value="X" id='redBox' />
 </form>
