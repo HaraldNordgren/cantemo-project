@@ -1,2 +1,9 @@
 <img src="/{{ im_path }}">
-<br>Metadata: [{{ metadata }}]
+<br>
+
+<form method="post">
+{% csrf_token %}
+<label>Metadata:</label>
+<input type="text" name='metadata' value="{{ metadata }}" />
+<input type="submit" value="Update" />
+</form>
