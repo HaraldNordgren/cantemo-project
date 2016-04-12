@@ -9,7 +9,7 @@ from image_bank.models import BankImage
 from watchdog.observers import Observer
 from watchdog.events import *
 
-from constants import watched_folder
+from constants import watched_folder, image_bank_folder
 
 
 class MyEventHandler(FileSystemEventHandler):
@@ -28,11 +28,11 @@ class MyEventHandler(FileSystemEventHandler):
     def on_deleted(self, event):
         if isinstance(event, FileDeletedEvent):
             #im_path = self.remove_dot(event)
-            BankImage.objects.filter(path=event.src_path).delete()
-            print("Removed %s" % event.src_path)
+            if BankImage.objects.filter(path=event.src_path).delete():
+                print("Removed %s" % event.src_path)
 
 
-#os.chdir(watched_folder)
+os.chdir(image_bank_folder)
 event_handler = MyEventHandler()
 observer = Observer()
 observer.schedule(event_handler, watched_folder, recursive=True)
