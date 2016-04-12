@@ -5,37 +5,38 @@ import time, os, django
 os.environ["DJANGO_SETTINGS_MODULE"] = "mysite.settings"
 django.setup()
 from image_bank.models import BankImage
+from image_bank.constants import *
 
 from watchdog.observers import Observer
 from watchdog.events import *
-
-from constants import watched_folder, image_bank_folder
 
 
 class MyEventHandler(FileSystemEventHandler):
 
     def remove_dot(self, event):
-        return "/".join(event.src_path.split("/")[1:])
+        #return "/".join(event.src_path.split("/")[1:])
+        return event.src_path.lstrip("./")
 
     def on_created(self, event):
         if isinstance(event, FileCreatedEvent):
-            #im_path = self.remove_dot(event)
-            im = BankImage(path=event.src_path)
+            rel_path = self.remove_dot(event)
+            im = BankImage(path=rel_path)
             im.save()
-            print("Added %s" % event.src_path)
-
+            print("Added %s" % rel_path)
 
     def on_deleted(self, event):
         if isinstance(event, FileDeletedEvent):
-            #im_path = self.remove_dot(event)
-            if BankImage.objects.filter(path=event.src_path).delete():
-                print("Removed %s" % event.src_path)
+            rel_path = self.remove_dot(event)
+            if BankImage.objects.filter(path=rel_path).delete()[0]:
+                print("Removed %s" % rel_path)
 
 
-os.chdir(image_bank_folder)
+full_watched_folder = "image_bank/" + watched_folder
+os.chdir(full_watched_folder)
+
 event_handler = MyEventHandler()
 observer = Observer()
-observer.schedule(event_handler, watched_folder, recursive=True)
+observer.schedule(event_handler, ".", recursive=True)
 observer.start()
 
 try:

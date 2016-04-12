@@ -3,14 +3,19 @@ from django.http import HttpResponse
 from django.views import generic
 
 from .models import BankImage
+from .constants import *
     
 def remove_prefix(string):
-    return "/".join(string.split("/")[2:])
+    return "/".join(string.split("/")[3:])
     #return string.lstrip("/")
 
-
 def index(request):
-    images = BankImage.objects.all()
+    images = []
+    for im in BankImage.objects.all():
+        short_path = im.path
+        #full_path = watched_folder + "/" + im.path
+        full_path = stored_images + im.path
+        images.append( (short_path, full_path) )
 
     context = { 'images': images }
     return render(request, 'image_bank/index.html', context)
@@ -25,11 +30,14 @@ def name_search(request):
 
 def show_image(request):
 
-    im_path = remove_prefix(request.path_info)
-    metadata = BankImage.objects.filter(path=im_path)[0].metadata
+    #print(request.path_info)
+    short_path = remove_prefix(request.path_info)
+    print("    " + short_path)
+    metadata = BankImage.objects.filter(path=short_path)[0].metadata
+    full_path = watched_folder + short_path
 
     context = {
-            'im_path' : remove_prefix(request.path_info),
+            'im_path' : full_path,
             'metadata': metadata }
     #print(remove_prefix(request.path_info))
     

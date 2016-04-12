@@ -4,7 +4,7 @@
 {% if images %}
     <ul>
     {% for im in images %}
-    <li><a href={{ im }}>{{ im }}</a></li>
+    <li><a href={{ im.1 }}>{{ im.0 }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
