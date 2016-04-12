@@ -1,7 +1,10 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'image_bank/style.css' %}" />
+
 {% if images %}
     <ul>
     {% for im in images %}
-        <li>{{ im }}</li>
+    <li><a href={{ im }}>{{ im }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

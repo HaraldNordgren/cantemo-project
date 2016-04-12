@@ -1,7 +1,7 @@
 {% if images %}
     <ul>
     {% for im in images %}
-        <li>{{ im }}</li>
+        <li>{{ im.path }} (<span contentEditable="true" id="txtUserName">hej</span>)</li>
     {% endfor %}
     </ul>
 {% else %}

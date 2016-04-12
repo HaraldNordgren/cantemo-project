@@ -19,22 +19,23 @@ class MyEventHandler(FileSystemEventHandler):
 
     def on_created(self, event):
         if isinstance(event, FileCreatedEvent):
-            im_path = self.remove_dot(event)
-            im = BankImage(path=im_path)
+            #im_path = self.remove_dot(event)
+            im = BankImage(path=event.src_path)
             im.save()
-            print("Added %s" % im_path)
+            print("Added %s" % event.src_path)
+
 
     def on_deleted(self, event):
         if isinstance(event, FileDeletedEvent):
-            im_path = self.remove_dot(event)
-            BankImage.objects.filter(path=im_path).delete()
-            print("Removed %s" % im_path)
+            #im_path = self.remove_dot(event)
+            BankImage.objects.filter(path=event.src_path).delete()
+            print("Removed %s" % event.src_path)
 
 
-os.chdir(watched_folder)
+#os.chdir(watched_folder)
 event_handler = MyEventHandler()
 observer = Observer()
-observer.schedule(event_handler, ".", recursive=True)
+observer.schedule(event_handler, watched_folder, recursive=True)
 observer.start()
 
 try:
