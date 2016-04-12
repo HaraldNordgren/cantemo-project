@@ -20,22 +20,28 @@ def remove_prefix(string):
 
 def index(request):
 
-    if request.GET.get('namesearch'):
-        search = request.GET.get('namesearch')
-        images = BankImage.objects.filter(path__icontains=search)
+    name_search = ""
+    metadata_search = ""
+
+    if request.GET.get('name_search'):
+        name_search = request.GET.get('name_search')
+        images = BankImage.objects.filter(path__icontains=name_search)
+    elif request.GET.get('metadata_search'):
+        metadata_search = request.GET.get('metadata_search')
+        images = BankImage.objects.filter(metadata__icontains=metadata_search)
     else:
-        search = ""
         images = BankImage.objects.all()
 
-    im_data = []
+    image_data = []
     for im in images:
         short_path = im.path
         full_path = stored_images + im.path
-        im_data.append( (short_path, full_path, im.metadata) )
+        image_data.append( (short_path, full_path, im.metadata) )
 
     context = {
-            'images': im_data,
-            'search': search}
+            'images': image_data,
+            'name_search': name_search,
+            'metadata_search': metadata_search}
     return render(request, 'image_bank/index.html', context)
 
 def show_image(request):

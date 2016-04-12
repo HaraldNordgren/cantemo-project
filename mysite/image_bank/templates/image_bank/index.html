@@ -3,8 +3,17 @@
 
 <form method="get">
     <label>Name search: </label>
-    <input type="text" name="namesearch" value="{{ search }}">
-    <input type="submit" value="OK">
+    <input type="text" name="name_search" value="{{ name_search }}">
+    <input type="submit" value="Go!">
+    <a href="/image_bank">
+        <input type="button" value="Clear">
+    </a>
+</form>
+
+<form method="get">
+    <label>Metadata search: </label>
+    <input type="text" name="metadata_search" value="{{ metadata_search }}">
+    <input type="submit" value="Go!">
     <a href="/image_bank">
         <input type="button" value="Clear">
     </a>
@@ -21,7 +30,7 @@
     {% endfor %}
     </ul>
 {% else %}
-    {% if search %}
+    {% if name_search or metadata_search %}
         <p>No images matched the search.</p>
     {% else %}
         <p>The databse currently has no images.</p>
