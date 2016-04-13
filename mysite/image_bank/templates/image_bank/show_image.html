@@ -2,31 +2,38 @@
 <link rel="stylesheet" type="text/css" href="{% static 'image_bank/style.css' %}" />
 
 <div style="float: left;">
-<div>
-<form action="/image_bank/" method='post' style="float: left;">
-{% csrf_token %}
-<input type="submit" value="<" class='box' style='background: #0d0;'>
-</form>
+    <div>
+        <form action="/image_bank/" method='post' style="float: left;">
+        {% csrf_token %}
+        <input type="submit" value="<" class='box' style='background: #0d0;'>
+        </form>
 
-<form action="/image_bank/" method="post" style="float: right;">
-{% csrf_token %}
-<input type="hidden" name='delete' value='true' />
-<input type="hidden" name='short_path' value='{{ short_path }}' />
-<input type="hidden" name='full_path' value='{{ full_path }}' />
-<input type="submit" value="X" class='box' style='background: #d00;'
-    onClick="return confirm('Delete this image?')" />
-</form>
-</div>
+        <form action="/image_bank/" method="post" style="float: right;">
+        {% csrf_token %}
+        <input type="hidden" name='delete' value='true' />
+        <input type="hidden" name='short_path' value='{{ short_path }}' />
+        <input type="hidden" name='full_path' value='{{ full_path }}' />
+        <input type="submit" value="X" class='box' style='background: #d00;'
+            onClick="return confirm('Delete this file?')" />
+        </form>
+    </div>
 
-<img src="/{{ full_path }}" style="display:block; width:auto;">
-<br>
+    {% if file_category == "image" %}
+        <img src="/{{ full_path }}" style="display:block; width:auto;">
+    {% elif file_category == 'video' %}
+        <video width="420" controls>
+        <source src="/{{ full_path }}" type="{{ file_type }}">
+        Your browser does not support the video tag.
+        </video>
+    {% endif %}
+    <br>
 
-<form method="post">
-{% csrf_token %}
-<label>Metadata:</label>
-<div style="float: right;">
-<input type="text" name='metadata' value="{{ metadata }}" />
-<input type="submit" value="Update" />
-</div>
-</form>
+    <form method="post">
+    {% csrf_token %}
+    <label>Metadata:</label>
+    <div style="float: right;">
+        <input type="text" name='metadata' value="{{ metadata }}" />
+        <input type="submit" value="Update" />
+    </div>
+    </form>
 </div>

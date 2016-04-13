@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import time, os
+import time, os, mimetypes
 import django
 os.environ["DJANGO_SETTINGS_MODULE"] = "mysite.settings"
 django.setup()
@@ -20,7 +20,8 @@ class MyEventHandler(FileSystemEventHandler):
     def on_created(self, event):
         if isinstance(event, FileCreatedEvent):
             rel_path = self.remove_dot(event)
-            im = BankImage(path=rel_path)
+            file_type = mimetypes.guess_type(rel_path)[0]
+            im = BankImage(path=rel_path, file_type=file_type)
             im.save()
             print("Added %s" % rel_path)
 

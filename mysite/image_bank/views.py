@@ -44,21 +44,25 @@ def show_image(request):
 
     short_path = remove_prefix(request.path_info)
     full_path = watched_folder + short_path
+    
+    im = BankImage.objects.get(path=short_path)
+    file_category = im.file_type.split("/")[0]
 
     if request.POST.get('metadata'):
-        im = BankImage.objects.get(path=short_path)
         metadata = request.POST.get('metadata')
         im.metadata = metadata
         im.save()
-    elif request.POST:
-        print(request.POST)
-        metadata = ""
+    #elif request.POST:
+    #    print(request.POST)
+    #    metadata = ""
     else:
         metadata = BankImage.objects.get(path=short_path).metadata
     
     context = {
-            'short_path': short_path,
-            'full_path' : full_path,
-            'metadata'  : metadata }
+            'short_path'    : short_path,
+            'full_path'     : full_path,
+            'metadata'      : metadata,
+            'file_category' : file_category,
+            'file_type'     : im.file_type}
 
     return render(request, 'image_bank/show_image.html', context)
