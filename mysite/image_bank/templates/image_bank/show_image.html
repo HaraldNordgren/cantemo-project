@@ -1,19 +1,30 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'image_bank/style.css' %}" />
 
-<img src="/{{ full_path }}">
+<div style="float: left;">
+<div>
+<form action="/image_bank/" method='post' style="float: left;">
+{% csrf_token %}
+<input type="submit" value="<" id='greenBox'>
+</form>
+
+<form action="/image_bank/" method="post" style="float: right;">
+{% csrf_token %}
+<input type="hidden" name='delete' value='true' />
+<input type="hidden" name='short_path' value='{{ short_path }}' />
+<input type="submit" value="X" id='redBox' onClick="return confirm('Delete this image?')" />
+</form>
+</div>
+
+<img src="/{{ full_path }}" style="display:block; width:auto;">
 <br>
 
 <form method="post">
 {% csrf_token %}
 <label>Metadata:</label>
+<div style="float: right;">
 <input type="text" name='metadata' value="{{ metadata }}" />
 <input type="submit" value="Update" />
+</div>
 </form>
-
-<form action="/image_bank/" method="post" id="idOfForm">
-{% csrf_token %}
-<input type="hidden" name='delete' value='true' />
-<input type="hidden" name='short_path' value='{{ short_path }}' />
-<input type="submit" value="X" id='redBox' />
-</form>
+</div>
