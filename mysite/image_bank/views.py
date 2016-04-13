@@ -5,16 +5,8 @@ from django.views import generic
 from .models import BankImage
 from .constants import *
 
-"""
-def path_search(request):
-    return render(request, 'image_bank/path_search.html')
+import os
 
-def name_search(request):
-    images = BankImage.objects.filter(path__icontains=request.GET.get('q'))
-    context = { 'images': images }
-    return render(request, 'image_bank/name_search.html', context)
-"""
-    
 def remove_prefix(string):
     return "/".join(string.split("/")[3:])
 
@@ -31,6 +23,7 @@ def index(request):
         images = BankImage.objects.filter(metadata__icontains=metadata_search)
     elif request.POST.get('delete'):
         BankImage.objects.get(path=request.POST.get('short_path')).delete()
+        os.remove("image_bank/" + request.POST.get('full_path'))
         images = BankImage.objects.all()
     else:
         images = BankImage.objects.all()

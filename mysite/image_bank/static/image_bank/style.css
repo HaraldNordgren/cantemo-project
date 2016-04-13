@@ -3,21 +3,7 @@ form label { font-size: 14px; }
 form input { font-size: 12px; }
 label { float: left; width: 100px; }
 
-#redBox {
-    background: #d00;
-    color: #fff;
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    font-size: 5em;
-    font-weight: bold;
-    text-align: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    cursor: hand;
-}
-
-#greenBox {
-    background: #0d0;
+.box {
     color: #fff;
     font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 5em;

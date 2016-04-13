@@ -5,14 +5,16 @@
 <div>
 <form action="/image_bank/" method='post' style="float: left;">
 {% csrf_token %}
-<input type="submit" value="<" id='greenBox'>
+<input type="submit" value="<" class='box' style='background: #0d0;'>
 </form>
 
 <form action="/image_bank/" method="post" style="float: right;">
 {% csrf_token %}
 <input type="hidden" name='delete' value='true' />
 <input type="hidden" name='short_path' value='{{ short_path }}' />
-<input type="submit" value="X" id='redBox' onClick="return confirm('Delete this image?')" />
+<input type="hidden" name='full_path' value='{{ full_path }}' />
+<input type="submit" value="X" class='box' style='background: #d00;'
+    onClick="return confirm('Delete this image?')" />
 </form>
 </div>
 
