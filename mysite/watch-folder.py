@@ -50,7 +50,6 @@ class MyEventHandler(FileSystemEventHandler):
     def on_deleted(self, event):
         if isinstance(event, FileDeletedEvent):
             rel_path = self.remove_dot(event)
-            print(BankImage.objects.filter(path=rel_path).delete())
             if BankImage.objects.filter(path=rel_path).delete()[0]:
                 print("Removed %s" % rel_path)
 
