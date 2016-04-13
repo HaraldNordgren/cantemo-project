@@ -13,6 +13,7 @@
         <input type="hidden" name='delete' value='true' />
         <input type="hidden" name='short_path' value='{{ short_path }}' />
         <input type="hidden" name='full_path' value='{{ full_path }}' />
+        <input type="hidden" name='converted_path' value='{{ converted_path }}' />
         <input type="submit" value="X" class='box' style='background: #d00;'
             onClick="return confirm('Delete this file?')" />
         </form>
@@ -22,7 +23,11 @@
         <img src="/{{ full_path }}" style="display:block; width:auto;">
     {% elif file_category == 'video' %}
         <video width="420" controls>
-        <source src="/{{ full_path }}" type="{{ file_type }}">
+        {% if converted_path %}
+            <source src="/{{ converted_path }}" type="video/mp4">
+        {% else %}
+            <source src="/{{ full_path }}" type="{{ file_type }}">
+        {% endif %}
         Your browser does not support the video tag.
         </video>
     {% endif %}
