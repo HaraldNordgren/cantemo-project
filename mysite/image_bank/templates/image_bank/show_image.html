@@ -20,7 +20,7 @@
     </div>
 
     {% if file_category == "image" %}
-        <img src="/{{ full_path }}" style="display:block; width:auto;">
+        <img width="420" src="/{{ full_path }}" style="display:block;">
     {% elif file_category == 'video' %}
         <video width="420" controls>
         {% if converted_path %}
