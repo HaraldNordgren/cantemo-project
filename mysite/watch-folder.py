@@ -20,8 +20,8 @@ class MyEventHandler(FileSystemEventHandler):
 
         (filename, ex) = os.path.splitext(rel_path)
 
-        converted_path = filename + ".mp4"
-        cmd = 'ffmpeg -i %s %s -y' % (rel_path, converted_path)
+        converted_path = filename + "_libx264.mp4"
+        cmd = 'ffmpeg -i "%s" "%s" -y' % (rel_path, converted_path)
         subprocess.call(cmd, shell=True)
 
         return converted_path
@@ -30,7 +30,8 @@ class MyEventHandler(FileSystemEventHandler):
         if isinstance(event, FileCreatedEvent):
             rel_path = self.remove_dot(event)
             start_path = os.path.splitext(rel_path)[0]
-            if BankImage.objects.filter(path__startswith=start_path):
+
+            if BankImage.objects.filter(path__startswith=start_path.rstrip("_libx264")):
                     return
 
             file_type = mimetypes.guess_type(rel_path)[0]
@@ -38,7 +39,7 @@ class MyEventHandler(FileSystemEventHandler):
             if file_type == 'application/mxf':
                 file_type = 'video/mxf'
 
-            if file_type.split("/")[0] == 'video' and file_type != 'video/mp4':
+            if file_type.split("/")[0] == 'video':
                 converted_path = self.convert_video(rel_path)
                 im = BankImage(path=rel_path, file_type=file_type, converted_path=converted_path)
             else:
